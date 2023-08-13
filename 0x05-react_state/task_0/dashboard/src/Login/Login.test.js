@@ -1,30 +1,25 @@
-import { shallow, mount, unmount } from '../../config/setupTests';
-import { StyleSheetTestUtils } from 'aphrodite';
-import WithLoggingHOC from '../HOC/WithLogging';
+import React from 'react';
+import { shallow } from 'enzyme';
 import Login from './Login';
+import { StyleSheetTestUtils } from 'aphrodite';
 
+beforeEach(() => {
+    StyleSheetTestUtils.suppressStyleInjection();
+});
 
-// shallow render/mount login component
 describe('<Login />', () => {
-	beforeEach(() => {
-		StyleSheetTestUtils.suppressStyleInjection();
-	});
+    it('renders an <Login /> component checking for App-Login', () => {
+        const wrapper = shallow(<Login />);
+        expect(wrapper.find('#Login')).toHaveLength(1);
+    });
 
-	afterEach(() => {
-		jest.clearAllMocks();
-	});
-	
-	it('Tests that Login renders without crashing', () => {
-		const wrapper = shallow(<Login />);
-		wrapper.update();
-		expect(wrapper.exists()).toBe(true);
-	})
+    it('renders an <Login /> component checking for input', () => {
+        const wrapper = shallow(<Login />);
+        expect(wrapper.find('div input')).toHaveLength(2);
+    });
 
-	it('Tests that the component renders 2 <input> and 2 <label> tags', () => {
-		const Example = WithLoggingHOC(() => <Login />);
-		const wrapper = mount(<Example />);
-		expect(wrapper.find('input').length).toBe(2);
-		expect(wrapper.find('label').length).toBe(2);
-		wrapper.unmount();
-	})
+    it('renders an <Login /> component checking for label', () => {
+        const wrapper = shallow(<Login />);
+        expect(wrapper.find('div label')).toHaveLength(2);
+    });
 });

@@ -1,70 +1,47 @@
-import React, { memo } from 'react'
-import { StyleSheet, css } from 'aphrodite'
-import propTypes from 'prop-types'
+import React, { memo } from 'react';
+import PropTypes from 'prop-types';
+import { StyleSheet, css } from 'aphrodite';
+
+const styles = StyleSheet.create({
+    NotificationListItemDefault: {
+        color: 'blue',
+    },
+
+    NotificationListItemUrgent: {
+        color: 'red',
+    },
 
 
-const NotificationItem = ({ type, value, html, markAsRead, id }) => {
-	// props:
-	// - type: string, required, default: 'default'
-	// - value: string
-	// - html: object with key '__html' and value: string
-	// - markAsRead: function
-	// - id: number
-	if (type === 'urgent') {
-		return (
-			<li onClick={() => { markAsRead(id) }}
-				data-notification-type={type}
-				dangerouslySetInnerHTML={html}
-				className={css(itemStyles.urgent)}
-			>
-				{value}
-			</li>
-		)
-	}
-	return (
-		<li onClick={() => { markAsRead(id) }}
-			data-notification-type={type}
-			dangerouslySetInnerHTML={html}
-			className={css(itemStyles.default)}
-		>
-			{value}
-		</li>
-	)
-}
+    // Notification list item
+    NotificationsListItem: {
+        listStyleType: 'none',
+        fontSize: '20px',
+        padding: '10px 8px',
+        borderBottom: '1px solid black',
+    },
+});
 
-const itemStyles = StyleSheet.create({
-	urgent: {
-		color: 'red',
-		width: '100%',
-		borderBottom: '1px solid #000000',
-		fontSize: '20px',
-		padding: '10px 8px'
-	},
-
-	default: {
-		color: 'blue',
-		width: '100%',
-		borderBottom: '1px solid #000000',
-		fontSize: '20px',
-		padding: '10px 8px'
-	}
-})
-
+// functional component ES6 shortcut
+const NotificationItem = ({ type, html, value, markAsRead }) => {
+    // JSX goes here
+    return (
+        <li
+            data-notification-type={ type }
+            dangerouslySetInnerHTML={ html }
+            onClick={ markAsRead }
+            className={ type === 'default' ? css(styles.NotificationsListItem, styles.NotificationListItemDefault) : css(styles.NotificationsListItem, styles.NotificationListItemUrgent) }
+        >{ value }</li>
+    );
+};
 
 NotificationItem.propTypes = {
-	type: propTypes.string,
-	value: propTypes.string,
-	html: propTypes.shape({
-		__html: propTypes.string,
-	}),
-	markAsRead: propTypes.func,
-	id: propTypes.number,
-}
+    html: PropTypes.shape({ __html: PropTypes.string }),
+    value: PropTypes.string,
+    type: PropTypes.string.isRequired
+};
 
 NotificationItem.defaultProps = {
-	type: 'default',
-	markAsRead: () => { },
-	id: 0,
+    type: 'default',
 }
 
-export default memo(NotificationItem)
+export default memo(NotificationItem);

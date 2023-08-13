@@ -1,25 +1,23 @@
-import { shallow, mount } from '../../config/setupTests';
-import { StyleSheetTestUtils } from 'aphrodite';
+import React from 'react';
+import { shallow } from 'enzyme';
 import BodySection from './BodySection';
+import { StyleSheetTestUtils } from 'aphrodite';
 
+beforeEach(() => {
+    StyleSheetTestUtils.suppressStyleInjection();
+});
 
 describe('<BodySection />', () => {
-	beforeEach(() => {
-		StyleSheetTestUtils.suppressStyleInjection();
-	});
-
-	it(`Renders h2 and children correctly when no children in props`, () => {
-		const wrapper = shallow(<BodySection title="My title" />);
-		expect(wrapper.exists()).toBe(true);
-		expect(wrapper.find('h2').length).toBe(1);
-		expect(wrapper.find('h2').text()).toBe('My title');
-	})
-
-	it(`Renders h2 and children correctly when children in props`, () => {
-		const wrapper = shallow(<BodySection title="test title"><p>test children</p></BodySection>)
-		expect(wrapper.find('h2').text()).toBe('test title');
-		expect(wrapper.find('p').text()).toBe('test children');
-		expect(wrapper.find('p').length).toBe(1);
-		expect(wrapper.find('h2').length).toBe(1);
-	})
-})
+    it('renders a <BodySection /> component', () => {
+        const wrapper = shallow(
+        <BodySection title="test h2">
+            <p>test p</p>
+        </BodySection>
+        );
+        expect(wrapper).toHaveLength(1);
+        expect(wrapper.find('h2').length).toEqual(1);
+        expect(wrapper.find('h2').text()).toEqual('test h2');
+        expect(wrapper.find('p').length).toEqual(1);
+        expect(wrapper.find('p').text()).toEqual('test p');
+    });
+});
